@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IPA Phonetic Dictionary</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 0.25rem;
+      color: #1a202c;
+      text-align: center;
+    }
+
+    p.subtitle {
+      font-weight: 400;
+      font-size: 1.1rem;
+      color: #4a5568;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    input[type="search"] {
+      width: 100%;
+      max-width: 400px;
+      padding: 0.7rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #cbd5e0;
+      outline-offset: 2px;
+      outline-color: transparent;
+      transition: outline-color 0.3s ease;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+    }
+    input[type="search"]:focus {
+      outline-color: #3182ce;
+      border-color: #3182ce;
+      box-shadow: 0 0 8px #3182ceaa;
+    }
+
+    .dictionary {
+      width: 100%;
+      max-width: 900px;
+      display: grid;
+      gap: 1.8rem;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgb(0 0 0 / 0.1);
+      padding: 1.5rem 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgb(0 0 0 / 0.15);
+    }
+
+    .symbol {
+      font-size: 3.6rem;
+      font-weight: 700;
+      color: #2b6cb0;
+      margin-bottom: 0.5rem;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .description {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: #2d3748;
+      text-align: center;
+    }
+
+    ul.words {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+
+    ul.words li {
+      padding: 0.15rem 0.3rem;
+      border-radius: 5px;
+      cursor: default;
+      transition: background-color 0.2s ease;
+    }
+    ul.words li:hover {
+      background-color: #ebf8ff;
+      color: #2c5282;
+    }
+    .atas{
+      text-align: center;
+      margin-bottom: 2rem;
+      background-color:#0066cc;
+      padding : 20px;
+      width: 100%;
+      }
+    .footer {
+        background: #0066cc;
+        width: 100%;
+        color: white;
+        text-align: center;
+        margin-top: 50px;
+    }
+    .footer-content {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        padding-bottom: 20px;
+    }
+    .footer-section {
+        flex: 1;
+        min-width: 200px;
+        margin: 10px;
+    }
+    .footer-section h2 {
+        color: white;
+    }
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+    .footer-section ul li {
+        margin: 5px 0;
+    }
+    .footer-section ul li a {
+        color: white;
+        text-decoration: none;
+    }
+    .footer-section ul li a:hover {
+        text-decoration: underline;
+        color: skyblue;
+    }
+    .footer-section img {
+        width: 30px;
+        margin: 5px;
+    }
+    .footer-bottom {
+        margin-top: 10px;
+        border-top: 1px solid #444;
+        padding-top: 10px;
+    }
+    @media (max-width: 480px) {
+      .symbol {
+        font-size: 2.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="atas">
+    <h1 style="color: white;">PHONEMAP</h1>
+    <p class="subtitle" style="color: white;">Explore IPA symbols and example words</p>
+    <input type="search" id="searchInput" placeholder="Search symbols or words..." aria-label="Search IPA symbols or words" />
+  </div>
+
+  <main class="dictionary" id="dictionary">
+    <!-- Cards will be injected here by JS -->
+  </main>
+
+
+  <script>
+    const ipaData = [
+      {
+        symbol: 'p',
+        description: 'Voiceless bilabial plosive',
+        explanation: 'A consonant sound made by releasing air after closing both lips without vibration.',
+        words: [
+          { word: 'Pet', explanation: 'A small domesticated animal.' },
+          { word: 'Spin', explanation: 'To turn around rapidly.' },
+          { word: 'Cup', explanation: 'A small, typically cylindrical container.' }
+        ]
+      },
+      {
+        symbol: 'b',
+        description: 'Voiced bilabial plosive',
+        explanation: 'A consonant sound made with both lips closing and vocal cords vibrating.',
+        words: [
+          { word: 'Bat', explanation: 'A flying mammal.' },
+          { word: 'Cab', explanation: 'A taxi or a compartment in a vehicle.' },
+          { word: 'Rub', explanation: 'To move something back and forth against a surface.' }
+        ]
+      },
+      {
+        symbol: 't',
+        description: 'Voiceless alveolar plosive',
+        explanation: 'A consonant sound made by blocking airflow with the tongue against the alveolar ridge without vibration.',
+        words: [
+          { word: 'Tip', explanation: 'The pointed or rounded end of something.' },
+          { word: 'Stick', explanation: 'A thin piece of wood.' },
+          { word: 'Cat', explanation: 'A small domesticated feline.' }
+        ]
+      },
+      {
+        symbol: 'd',
+        description: 'Voiced alveolar plosive',
+        explanation: 'A consonant sound made by blocking airflow with the tongue against the alveolar ridge with vocal cord vibration.',
+        words: [
+          { word: 'Dog', explanation: 'A domesticated carnivorous mammal.' },
+          { word: 'Mad', explanation: 'Angry or upset.' },
+          { word: 'Bad', explanation: 'Of poor quality or low standard.' }
+        ]
+      },
+      {
+        symbol: 'k',
+        description: 'Voiceless velar plosive',
+        explanation: 'A consonant sound produced by obstructing airflow using the back of the tongue against the soft palate without vocal cord vibration.',
+        words: [
+          { word: 'Cat', explanation: 'A small domesticated feline.' },
+          { word: 'Skill', explanation: 'The ability to do something well.' },
+          { word: 'Back', explanation: 'The rear surface of the human body.' }
+        ]
+      },
+      {
+        symbol: 'g',
+        description: 'Voiced velar plosive',
+        explanation: 'A consonant sound produced by obstructing airflow using the back of the tongue against the soft palate with vocal cord vibration.',
+        words: [
+          { word: 'Go', explanation: 'To move from one place to another.' },
+          { word: 'Bag', explanation: 'A container made of flexible material.' },
+          { word: 'Flag', explanation: 'A piece of cloth with a distinctive design.' }
+        ]
+      },
+      {
+        symbol: 'f',
+        description: 'Voiceless labiodental fricative',
+        explanation: 'A consonant sound made by forcing air through the bottom lip and upper teeth without vocal cord vibration.',
+        words: [
+          { word: 'Fan', explanation: 'A device for creating a current of air.' },
+          { word: 'Leaf', explanation: 'A flat, green part of a plant.' },
+          { word: 'Life', explanation: 'The condition that distinguishes animals and plants.' }
+        ]
+      },
+      {
+        symbol: 'v',
+        description: 'Voiced labiodental fricative',
+        explanation: 'A consonant sound made by forcing air through the bottom lip and upper teeth with vocal cord vibration.',
+        words: [
+          { word: 'Van', explanation: 'A medium-sized motor vehicle.' },
+          { word: 'Give', explanation: 'To hand over something to someone.' },
+          { word: 'Love', explanation: 'An intense feeling of deep affection.' }
+        ]
+      },
+      {
+        symbol: 'θ',
+        description: 'Voiceless dental fricative',
+        explanation: 'A consonant sound made by forcing air through the tongue and upper teeth without vocal cord vibration.',
+        words: [
+          { word: 'Think', explanation: 'To have a particular opinion or belief.' },
+          { word: 'Bath', explanation: 'A washing of the body in water.' },
+          { word: 'Thing', explanation: 'An object or entity.' }
+        ]
+      },
+      {
+        symbol: 'ð',
+        description: 'Voiced dental fricative',
+        explanation: 'A consonant sound made by forcing air through the tongue and upper teeth with vocal cord vibration.',
+        words: [
+          { word: 'This', explanation: 'Used to identify a specific person or thing.' },
+          { word: 'Bathe', explanation: 'To wash oneself in water.' },
+          { word: 'Them', explanation: 'Used to refer to two or more people or things.' }
+        ]
+      },
+      {
+        symbol: 's',
+        description: 'Voiceless alveolar fricative',
+        explanation: 'A consonant sound made by forcing air through a narrow channel formed by the tongue and alveolar ridge without vocal cord vibration.',
+        words: [
+          { word: 'See', explanation: 'To perceive with the eyes.' },
+          { word: 'Pass', explanation: 'To move past something.' },
+          { word: 'Hiss', explanation: 'To make a sharp sibilant sound.' }
+        ]
+      },
+      {
+        symbol: 'z',
+        description: 'Voiced alveolar fricative',
+        explanation: 'A consonant sound made by forcing air through a narrow channel formed by the tongue and alveolar ridge with vocal cord vibration.',
+        words: [
+          { word: 'Zoo', explanation: 'A place where animals are kept for public viewing.' },
+          { word: 'Buzz', explanation: 'A low, continuous humming sound.' },
+          { word: 'Lazy', explanation: 'Unwilling to work or use energy.' }
+        ]
+      },
+      {
+        symbol: 'ʃ',
+        description: 'Voiceless postalveolar fricative (sh sound)',
+        explanation: 'A consonant sound made with the tongue near or touching the back of the alveolar ridge without vocal cord vibration.',
+        words: [
+          { word: 'She', explanation: 'A female person or animal.' },
+          { word: 'Push', explanation: 'To exert force on something to move it away.' },
+          { word: 'Cash', explanation: 'Money in the form of coins or banknotes.' }
+        ]
+      },
+      {
+        symbol: 'ʒ',
+        description: 'Voiced postalveolar fricative',
+        explanation: 'A consonant sound made with the tongue near or touching the back of the alveolar ridge with vocal cord vibration.',
+        words: [
+          { word: 'Measure', explanation: 'To ascertain the size, amount, or degree of something.' },
+          { word: 'Vision', explanation: 'The ability to see.' },
+          { word: 'Beige', explanation: 'A pale sandy yellow color.' }
+        ]
+      },
+      {
+        symbol: 'm',
+        description: 'Bilabial nasal',
+        explanation: 'A consonant sound made by closing both lips and letting air escape through the nose with vocal cord vibration.',
+        words: [
+          { word: 'Man', explanation: 'An adult human male.' },
+          { word: 'Sum', explanation: 'The total amount resulting from the addition of two or more numbers.' },
+          { word: 'Lamb', explanation: 'A young sheep.' }
+        ]
+      },
+      {
+        symbol: 'n',
+        description: 'Alveolar nasal',
+        explanation: 'A consonant sound made by blocking airflow with the tongue against the alveolar ridge and letting air escape through the nose.',
+        words: [
+          { word: 'No', explanation: 'Used to give a negative response.' },
+          { word: 'Pan', explanation: 'A shallow container used for cooking.' },
+          { word: 'Sun', explanation: 'The star at the center of the solar system.' }
+        ]
+      },
+      {
+        symbol: 'ŋ',
+        description: 'Velar nasal',
+        explanation: 'A consonant sound made by blocking airflow with the back of the tongue against the soft palate and letting air escape through the nose.',
+        words: [
+          { word: 'Sing', explanation: 'To produce musical sounds with the voice.' },
+          { word: 'Wing', explanation: 'A limb used for flying.' },
+          { word: 'Long', explanation: 'Measuring a great distance from end to end.' }
+        ]
+      },
+      {
+        symbol: 'h',
+        description: 'Voiceless glottal fricative',
+        explanation: 'A consonant sound produced with air passing through the open glottis without vocal cord vibration.',
+        words: [
+          { word: 'He', explanation: 'A male person or animal.' },
+          { word: 'Ahead', explanation: 'In front; in the direction that one is facing.' },
+          { word: 'Hello', explanation: 'A greeting.' }
+        ]
+      },
+      {
+        symbol: 'l',
+        description: 'Alveolar lateral approximant',
+        explanation: 'A consonant sound produced by airflow around the sides of the tongue close to the alveolar ridge.',
+        words: [
+          { word: 'Let', explanation: 'To allow or permit.' },
+          { word: 'Well', explanation: 'In a good or satisfactory manner.' },
+          { word: 'Feel', explanation: 'To perceive or experience an emotion or sensation.' }
+        ]
+      },
+      {
+        symbol: 'r',
+        description: 'Alveolar approximant',
+        explanation: 'A consonant sound produced with the tongue close to the alveolar ridge without touching it.',
+        words: [
+          { word: 'Red', explanation: 'A color at the end of the visible spectrum.' },
+          { word: 'Run', explanation: 'To move swiftly on foot.' },
+          { word: 'Car', explanation: 'A road vehicle powered by an engine.' }
+        ]
+      },
+      {
+        symbol: 'j',
+        description: 'Palatal approximant (y sound)',
+        explanation: 'A consonant sound produced with the body of the tongue raised towards the hard palate.',
+        words: [
+          { word: 'Yes', explanation: 'Used to express affirmation.' },
+          { word: 'Beyond', explanation: 'At or to the further side of.' },
+          { word: 'Canyon', explanation: 'A deep gorge, typically with a river flowing through it.' }
+        ]
+      },
+      {
+        symbol: 'w',
+        description: 'Labio-velar approximant',
+        explanation: 'A consonant sound produced by rounding the lips and raising the back of the tongue.',
+        words: [
+          { word: 'We', explanation: 'Used by a speaker to refer to himself or herself and others.' },
+          { word: 'Win', explanation: 'To be successful or victorious.' },
+          { word: 'Quick', explanation: 'Moving fast or doing something in a short time.' }
+        ]
+      },
+      {
+        symbol: 'iː',
+        description: 'Close front unrounded vowel (long “ee” sound)',
+        explanation: 'A long vowel sound made with the tongue positioned high and at the front of the mouth.',
+        words: [
+          { word: 'See', explanation: 'To perceive with the eyes.' },
+          { word: 'Tree', explanation: 'A perennial plant with an elongated stem.' },
+          { word: 'Meat', explanation: 'The flesh of animals used as food.' }
+        ]
+      },
+      {
+        symbol: 'ɪ',
+        description: 'Near-close near-front unrounded vowel',
+        explanation: 'A short vowel sound made with the tongue close to the roof of the mouth and near the front.',
+        words: [
+          { word: 'Sit', explanation: 'To rest with the body supported by the buttocks.' },
+          { word: 'Bit', explanation: 'A small piece or amount of something.' },
+          { word: 'Fish', explanation: 'A limbless cold-blooded vertebrate animal.' }
+        ]
+      },
+      {
+        symbol: 'e',
+        description: 'Close-mid front unrounded vowel',
+        explanation: 'A vowel sound made with the tongue in the middle-high front position without lip rounding.',
+        words: [
+          { word: 'Bed', explanation: 'A piece of furniture for sleep or rest.' },
+          { word: 'Head', explanation: 'The upper part of the body.' },
+          { word: 'Said', explanation: 'Past tense of say.' }
+        ]
+      },
+      {
+        symbol: 'æ',
+        description: 'Near-open front unrounded vowel',
+        explanation: 'A vowel sound made with the tongue low and at the front of the mouth.',
+        words: [
+          { word: 'Cat', explanation: 'A small domesticated feline.' },
+          { word: 'Man', explanation: 'An adult human male.' },
+          { word: 'Sad', explanation: 'Feeling sorrowful or unhappy.' }
+        ]
+      },
+      {
+        symbol: 'ʌ',
+        description: 'Open-mid back unrounded vowel',
+        explanation: 'A vowel sound made with the tongue in the middle-back position without lip rounding.',
+        words: [
+          { word: 'Cup', explanation: 'A small, typically cylindrical container.' },
+          { word: 'Luck', explanation: 'Success or failure apparently brought by chance.' },
+          { word: 'Sun', explanation: 'The star at the center of the solar system.' }
+        ]
+      },
+      {
+        symbol: 'ɔː',
+        description: 'Open-mid back rounded vowel',
+        explanation: 'A long vowel sound made with the tongue in the middle-back position with lip rounding.',
+        words: [
+          { word: 'Law', explanation: 'The system of rules that a country recognizes.' },
+          { word: 'Saw', explanation: 'A hand or power tool used for cutting.' },
+          { word: 'Draw', explanation: 'To produce a picture or diagram by making lines.' }
+        ]
+      },
+      {
+        symbol: 'ʊ',
+        description: 'Near-close near-back rounded vowel',
+        explanation: 'A short vowel sound made with the tongue near the roof of the mouth and near the back, with lips rounded.',
+        words: [
+          { word: 'Put', explanation: 'To place something in a particular position.' },
+          { word: 'Foot', explanation: 'The lower extremity of the leg.' },
+          { word: 'Good', explanation: 'Of high quality or standard.' }
+        ]
+      },
+      {
+        symbol: 'uː',
+        description: 'Close back rounded vowel (long “oo” sound)',
+        explanation: 'A long vowel sound made with the tongue positioned high and at the back of the mouth with lip rounding.',
+        words: [
+          { word: 'Blue', explanation: 'A color between green and violet.' },
+          { word: 'Shoe', explanation: 'An outer covering for the foot.' },
+          { word: 'Too', explanation: 'Also; as well.' }
+        ]
+      },
+      {
+        symbol: 'ə',
+        description: 'Mid central vowel (schwa)',
+        explanation: 'An unstressed and neutral vowel sound, commonly heard in English unstressed syllables.',
+        words: [
+          { word: 'About', explanation: 'On the subject of; concerning.' },
+          { word: 'Sofa', explanation: 'A long upholstered seat with a back and arms.' },
+          { word: 'Comma', explanation: 'A punctuation mark indicating a pause.' }
+        ]
+      }
+    ];
+
+    const dictionaryEl = document.getElementById('dictionary');
+    const searchInput = document.getElementById('searchInput');
+
+    function createCard(entry) {
+      const card = document.createElement('article');
+      card.classList.add('card');
+      card.setAttribute('tabindex', '0');
+
+      const symbolEl = document.createElement('div');
+      symbolEl.className = 'symbol';
+      symbolEl.textContent = entry.symbol;
+
+      const descEl = document.createElement('p');
+      descEl.className = 'description';
+      descEl.textContent = entry.description;
+
+      const symbolExplanationEl = document.createElement('p');
+      symbolExplanationEl.className = 'symbol-explanation';
+      symbolExplanationEl.textContent = entry.explanation;
+
+      const wordsList = document.createElement('ul');
+      wordsList.className = 'words';
+      entry.words.forEach(({ word, explanation }) => {
+        const li = document.createElement('li');
+        li.textContent = word;
+
+        const explanationEl = document.createElement('span');
+        explanationEl.className = 'explanation';
+        explanationEl.textContent = ` (${explanation})`;
+
+        li.appendChild(explanationEl);
+        wordsList.appendChild(li);
+      });
+
+      card.appendChild(symbolEl);
+      card.appendChild(descEl);
+      card.appendChild(symbolExplanationEl);
+      card.appendChild(wordsList);
+
+      return card;
+    }
+
+    function renderDictionary(filterText = '') {
+      dictionaryEl.innerHTML = '';
+      const lowerFilter = filterText.trim().toLowerCase();
+      const filtered = ipaData.filter(entry => {
+        const inSymbol = entry.symbol.toLowerCase().includes(lowerFilter);
+        const inDesc = entry.description.toLowerCase().includes(lowerFilter);
+        const inSymbolExplanation = entry.explanation.toLowerCase().includes(lowerFilter);
+        const inWords = entry.words.some(({ word, explanation }) =>
+          word.toLowerCase().includes(lowerFilter) || explanation.toLowerCase().includes(lowerFilter)
+        );
+        return (
+          lowerFilter === '' ||
+          inSymbol ||
+          inDesc ||
+          inSymbolExplanation ||
+          inWords
+        );
+      });
+
+      if (filtered.length === 0) {
+        dictionaryEl.innerHTML = '<p style="color:#718096; text-align:center; width:100%; font-size:1.2rem;">No symbols or words found.</p>';
+        return;
+      }
+
+      filtered.forEach(entry => {
+        dictionaryEl.appendChild(createCard(entry));
+      });
+    }
+
+    searchInput.addEventListener('input', e => {
+      renderDictionary(e.target.value);
+    });
+
+    // Initial render
+    renderDictionary();
+  </script>
+<footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h2>About This App</h2>
+                <p>This app is a user-friendly IPA Phonetic Dictionary that displays phonetic symbols, their descriptions, and example words. It features a search function and works seamlessly in any browser, making it a convenient tool for learning IPA sounds..</p>
+            </div>
+            <div class="footer-section links">
+                <h2>About Us</h2>
+                <ul>
+                    <li>Fathan Abdillah</li>
+                    <li>Faiq Anas Aminudin</li>
+                    <li>Mahatma Prince Suprapto</li>  
+                    <li>Lesa Adventura Pieta</li>
+                </ul>
+            </div>
+            <div class="footer-section contact">
+                <h2>Contact Us</h2>
+                <p>Email: fathan.abdillah.2302216@students.um.ac.id</p>
+                <p>NIM: 230221608793</p>
+                <p>Address: Malang, Indonesia</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Phonemap.</p>
+        </div>
+    </footer>    
+</body>
+</html>

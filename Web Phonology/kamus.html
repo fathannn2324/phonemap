@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IPA Phonetic Dictionary</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 0.25rem;
+      color: #1a202c;
+      text-align: center;
+    }
+
+    p.subtitle {
+      font-weight: 400;
+      font-size: 1.1rem;
+      color: #4a5568;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    input[type="search"] {
+      width: 100%;
+      max-width: 400px;
+      padding: 0.7rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #cbd5e0;
+      outline-offset: 2px;
+      outline-color: transparent;
+      transition: outline-color 0.3s ease;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+    }
+    input[type="search"]:focus {
+      outline-color: #3182ce;
+      border-color: #3182ce;
+      box-shadow: 0 0 8px #3182ceaa;
+    }
+
+    .dictionary {
+      width: 100%;
+      max-width: 900px;
+      display: grid;
+      gap: 1.8rem;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgb(0 0 0 / 0.1);
+      padding: 1.5rem 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgb(0 0 0 / 0.15);
+    }
+
+    .symbol {
+      font-size: 3.6rem;
+      font-weight: 700;
+      color: #2b6cb0;
+      margin-bottom: 0.5rem;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .description {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: #2d3748;
+      text-align: center;
+    }
+
+    ul.words {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+
+    ul.words li {
+      padding: 0.15rem 0.3rem;
+      border-radius: 5px;
+      cursor: default;
+      transition: background-color 0.2s ease;
+    }
+    ul.words li:hover {
+      background-color: #ebf8ff;
+      color: #2c5282;
+    }
+    .atas{
+      text-align: center;
+      margin-bottom: 2rem;
+      background-color:#0066cc;
+      padding : 20px;
+      width: 100%;
+      }
+    .footer {
+        background: #0066cc;
+        width: 100%;
+        color: white;
+        text-align: center;
+        margin-top: 50px;
+    }
+    .footer-content {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        padding-bottom: 20px;
+    }
+    .footer-section {
+        flex: 1;
+        min-width: 200px;
+        margin: 10px;
+    }
+    .footer-section h2 {
+        color: white;
+    }
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+    .footer-section ul li {
+        margin: 5px 0;
+    }
+    .footer-section ul li a {
+        color: white;
+        text-decoration: none;
+    }
+    .footer-section ul li a:hover {
+        text-decoration: underline;
+        color: skyblue;
+    }
+    .footer-section img {
+        width: 30px;
+        margin: 5px;
+    }
+    .footer-bottom {
+        margin-top: 10px;
+        border-top: 1px solid #444;
+        padding-top: 10px;
+    }
+    @media (max-width: 480px) {
+      .symbol {
+        font-size: 2.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="atas">
+    <h1 style="color: white;">IPA Phonetic Dictionary</h1>
+    <p class="subtitle" style="color: white;">Explore IPA symbols and example words</p>
+    <input type="search" id="searchInput" placeholder="Search symbols or words..." aria-label="Search IPA symbols or words" />
+  </div>
+
+  <main class="dictionary" id="dictionary">
+    <!-- Cards will be injected here by JS -->
+  </main>
+
+  <script>
+    const ipaData = [
+      {
+        symbol: 'p',
+        description: 'Voiceless bilabial plosive',
+        words: ['pet', 'spin', 'cup']
+      },
+      {
+        symbol: 'b',
+        description: 'Voiced bilabial plosive',
+        words: ['bat', 'cab', 'rub']
+      },
+      {
+        symbol: 't',
+        description: 'Voiceless alveolar plosive',
+        words: ['tip', 'stick', 'cat']
+      },
+      {
+        symbol: 'd',
+        description: 'Voiced alveolar plosive',
+        words: ['dog', 'mad', 'bad']
+      },
+      {
+        symbol: 'k',
+        description: 'Voiceless velar plosive',
+        words: ['cat', 'skill', 'back']
+      },
+      {
+        symbol: 'g',
+        description: 'Voiced velar plosive',
+        words: ['go', 'bag', 'flag']
+      },
+      {
+        symbol: 'f',
+        description: 'Voiceless labiodental fricative',
+        words: ['fan', 'leaf', 'life']
+      },
+      {
+        symbol: 'v',
+        description: 'Voiced labiodental fricative',
+        words: ['van', 'give', 'love']
+      },
+      {
+        symbol: 'θ',
+        description: 'Voiceless dental fricative',
+        words: ['think', 'bath', 'thing']
+      },
+      {
+        symbol: 'ð',
+        description: 'Voiced dental fricative',
+        words: ['this', 'bathe', 'them']
+      },
+      {
+        symbol: 's',
+        description: 'Voiceless alveolar fricative',
+        words: ['see', 'pass', 'hiss']
+      },
+      {
+        symbol: 'z',
+        description: 'Voiced alveolar fricative',
+        words: ['zoo', 'buzz', 'lazy']
+      },
+      {
+        symbol: 'ʃ',
+        description: 'Voiceless postalveolar fricative (sh sound)',
+        words: ['she', 'push', 'cash']
+      },
+      {
+        symbol: 'ʒ',
+        description: 'Voiced postalveolar fricative',
+        words: ['measure', 'vision', 'beige']
+      },
+      {
+        symbol: 'm',
+        description: 'Bilabial nasal',
+        words: ['man', 'sum', 'lamb']
+      },
+      {
+        symbol: 'n',
+        description: 'Alveolar nasal',
+        words: ['no', 'pan', 'sun']
+      },
+      {
+        symbol: 'ŋ',
+        description: 'Velar nasal',
+        words: ['sing', 'wing', 'long']
+      },
+      {
+        symbol: 'h',
+        description: 'Voiceless glottal fricative',
+        words: ['he', 'ahead', 'hello']
+      },
+      {
+        symbol: 'l',
+        description: 'Alveolar lateral approximant',
+        words: ['let', 'well', 'feel']
+      },
+      {
+        symbol: 'r',
+        description: 'Alveolar approximant',
+        words: ['red', 'run', 'car']
+      },
+      {
+        symbol: 'j',
+        description: 'Palatal approximant (y sound)',
+        words: ['yes', 'beyond', 'canyon']
+      },
+      {
+        symbol: 'w',
+        description: 'Labio-velar approximant',
+        words: ['we', 'win', 'quick']
+      },
+      {
+        symbol: 'iː',
+        description: 'Close front unrounded vowel (long “ee” sound)',
+        words: ['see', 'tree', 'meat']
+      },
+      {
+        symbol: 'ɪ',
+        description: 'Near-close near-front unrounded vowel',
+        words: ['sit', 'bit', 'fish']
+      },
+      {
+        symbol: 'e',
+        description: 'Close-mid front unrounded vowel',
+        words: ['bed', 'head', 'said']
+      },
+      {
+        symbol: 'æ',
+        description: 'Near-open front unrounded vowel',
+        words: ['cat', 'man', 'sad']
+      },
+      {
+        symbol: 'ʌ',
+        description: 'Open-mid back unrounded vowel',
+        words: ['cup', 'luck', 'sun']
+      },
+      {
+        symbol: 'ɔː',
+        description: 'Open-mid back rounded vowel',
+        words: ['law', 'saw', 'draw']
+      },
+      {
+        symbol: 'ʊ',
+        description: 'Near-close near-back rounded vowel',
+        words: ['put', 'foot', 'good']
+      },
+      {
+        symbol: 'uː',
+        description: 'Close back rounded vowel (long “oo” sound)',
+        words: ['blue', 'shoe', 'too']
+      },
+      
+    ];
+
+    const dictionaryEl = document.getElementById('dictionary');
+    const searchInput = document.getElementById('searchInput');
+
+    function createCard(entry) {
+      const card = document.createElement('article');
+      card.classList.add('card');
+      card.setAttribute('tabindex', '0');
+
+      const symbolEl = document.createElement('div');
+      symbolEl.className = 'symbol';
+      symbolEl.textContent = entry.symbol;
+
+      const descEl = document.createElement('p');
+      descEl.className = 'description';
+      descEl.textContent = entry.description;
+
+      const wordsList = document.createElement('ul');
+      wordsList.className = 'words';
+      entry.words.forEach(word => {
+        const li = document.createElement('li');
+        li.textContent = word;
+        wordsList.appendChild(li);
+      });
+
+      card.appendChild(symbolEl);
+      card.appendChild(descEl);
+      card.appendChild(wordsList);
+
+      return card;
+    }
+
+    function renderDictionary(filterText = '') {
+      dictionaryEl.innerHTML = '';
+      const lowerFilter = filterText.trim().toLowerCase();
+      const filtered = ipaData.filter(entry => {
+        const inSymbol = entry.symbol.toLowerCase().includes(lowerFilter);
+        const inDesc = entry.description.toLowerCase().includes(lowerFilter);
+        const inWords = entry.words.some(word => word.toLowerCase().includes(lowerFilter));
+        return lowerFilter === '' || inSymbol || inDesc || inWords;
+      });
+
+      if (filtered.length === 0) {
+        dictionaryEl.innerHTML = '<p style="color:#718096; text-align:center; width:100%; font-size:1.2rem;">No symbols or words found.</p>';
+        return;
+      }
+
+      filtered.forEach(entry => {
+        dictionaryEl.appendChild(createCard(entry));
+      });
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      renderDictionary(e.target.value);
+    });
+
+    // Initial render
+    renderDictionary();
+  </script>
+
+<footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h2>About Us</h2>
+                <p>This app is a user-friendly IPA Phonetic Dictionary that displays phonetic symbols, their descriptions, and example words. It features a search function and works seamlessly in any browser, making it a convenient tool for learning IPA sounds..</p>
+            </div>
+            <div class="footer-section links">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li>Fathan Abdillah</li>
+                    <li>Faiq Anas Aminudin</li>
+                    <li>Mahatma Prince Suprapto</li>  
+                    <li>Lesa Adventura Pieta</li>
+                </ul>
+            </div>
+            <div class="footer-section contact">
+                <h2>Contact Us</h2>
+                <p>Email: fathan.abdillah.2302216@students.um.ac.id</p>
+                <p>NIM: 230221608793</p>
+                <p>Address: Malang, Indonesia</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Arema Phonology.</p>
+        </div>
+    </footer>    
+</body>
+</html>
